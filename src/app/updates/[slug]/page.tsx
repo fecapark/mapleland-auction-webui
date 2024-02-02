@@ -1,5 +1,3 @@
-"use client";
-
 import { allUpdatePosts } from "contentlayer/generated";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import Link from "next/link";
@@ -13,7 +11,7 @@ import "github-markdown-css";
 import { TD, TR, Table } from "@/components/MD/table";
 import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
 import { MdArrowBack } from "react-icons/md";
-import { useRouter } from "next/navigation";
+import PostBackButton from "@/components/pages/PostBackButton/PostBackButton";
 
 const mdxComponents: MDXComponents = {
   a: ({
@@ -40,20 +38,22 @@ const mdxComponents: MDXComponents = {
   h3: ({ children }) => <H3>{children}</H3>,
 };
 
-export const generatedStaticParams = async () => {
-  allUpdatePosts.map((post) => ({ slug: post._raw.flattenedPath }));
+export const generateStaticParams = async () => {
+  return allUpdatePosts.map((post) => ({
+    slug: post._raw.flattenedPath.split("/")[2],
+  }));
 };
 
-export const generatedMetadata = ({ params }: { params: { slug: string } }) => {
+export const generateMetadata = ({ params }: { params: { slug: string } }) => {
   const post = allUpdatePosts.find(
-    (post) => post._raw.flattenedPath === params.slug
+    (post) =>
+      post._raw.flattenedPath === `${post._raw.sourceFileDir}/${params.slug}`
   );
   if (!post) notFound();
+  return post;
 };
 
 export default function UpdatePage({ params }: { params: { slug: string } }) {
-  const router = useRouter();
-
   const post = allUpdatePosts.find(
     (post) =>
       post._raw.flattenedPath === `${post._raw.sourceFileDir}/${params.slug}`
@@ -77,15 +77,7 @@ export default function UpdatePage({ params }: { params: { slug: string } }) {
     <article className="w-full flex flex-col items-center">
       <ImbedHeader />
       <div className="max-w-[930px] min-h-[80vh] w-full pt-4 xs:pt-[40px] px-6 xs:px-[35px]">
-        <div
-          className="mb-[60px] card-border card-bg pl-4 pr-6 py-2 xs:py-3 inline-flex items-center gap-2 hover:bg-[#28282a] cursor-pointer"
-          onClick={() => router.back()}
-        >
-          <IconWrapper className="text-lg">
-            <MdArrowBack />
-          </IconWrapper>
-          <span className="text-sm xs:text-base font-semibold">돌아가기</span>
-        </div>
+        <PostBackButton />
         <H1>{post.title}</H1>
         <div className="text-lg xs:text-xl mt-3 text-[#b2b2b5] font-semibold mb-[60px]">
           업데이트 <span className="mx-2">·</span> {getDateString(post.date)} 에

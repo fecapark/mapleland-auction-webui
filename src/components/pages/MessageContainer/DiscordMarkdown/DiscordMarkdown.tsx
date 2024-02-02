@@ -40,7 +40,7 @@ function extractImgFromChildren(children: React.ReactNode) {
 export default function DiscordMarkdown({ content }: { content: string }) {
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
+      remarkPlugins={[remarkGfm as any]}
       components={{
         code({ children }) {
           if (!children) return null;

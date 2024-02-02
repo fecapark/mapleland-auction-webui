@@ -2,7 +2,7 @@ import LandingContainer from "@/components/pages/LandingContainer/LandingContain
 
 export default function Home() {
   return (
-    <main className="flex justify-center w-full min-h-[85vh] pt-[15vh]">
+    <main className="flex justify-center w-full min-h-[85vh]">
       <LandingContainer />
     </main>
   );

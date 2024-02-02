@@ -5,7 +5,7 @@ import ItemPriceChart from "@/components/pages/ItemPriceChart/ItemPriceChart";
 import ItemPriceNavigator from "@/components/pages/Navigator/ItemPriceNavigator";
 import PriceCardContainer from "@/components/pages/PriceCardContainer/PriceCardContainer";
 import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
-import { getItemStatistics } from "@/server/actions";
+import { getItemList, getItemStatistics } from "@/server/actions";
 import { datestrAscCompareFn } from "@/utils/date";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
@@ -73,6 +73,17 @@ export default function ItemPricePage({
     staleTime: 1000 * 60 * 60 * 2, // 2시간 동안은 데이터 신뢰 보장
   });
 
+  const { data: itemListData } = useQuery({
+    queryKey: ["item-list"],
+    queryFn: getItemList,
+    placeholderData: [],
+  });
+
+  const itemName = useMemo(() => {
+    if (!itemListData) return "";
+    return itemListData.find(({ id }) => `${id}` === itemId)?.name ?? "";
+  }, [itemId, itemListData]);
+
   const isStatisticsLoading = isLoading || statisticsData === undefined;
   const isStatisticsNotFound = !isStatisticsLoading && statisticsData === null;
 
@@ -113,7 +124,11 @@ export default function ItemPricePage({
             active={!inView}
           />
           <div className="flex flex-col items-center w-full">
-            <ItemHeader itemId={itemId} updatedAt={recentData.recentDate} />
+            <ItemHeader
+              itemId={itemId}
+              itemName={itemName}
+              updatedAt={recentData.recentDate}
+            />
             <ItemPriceNavigator />
             {!isStatisticsNotFound && !recentData.recentData?.reliable ? (
               <ReliabilityWarn />

@@ -156,7 +156,7 @@ function TrendingSection({
 }) {
   const { data: itemListData } = useQuery({
     queryKey: ["item-list"],
-    queryFn: getItemList,
+    queryFn: () => getItemList(),
     placeholderData: [],
   });
 

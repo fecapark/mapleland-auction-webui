@@ -29,7 +29,7 @@ export default function FixedPriceCardContainer({
   const section = useRecoilValue(itemPriceNavigatorSectionAtom);
   const { data: itemListData } = useQuery({
     queryKey: ["item-list"],
-    queryFn: getItemList,
+    queryFn: () => getItemList(),
     placeholderData: [],
   });
 

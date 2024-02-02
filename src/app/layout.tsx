@@ -9,6 +9,7 @@ import Modal from "@/components/modals/Modal";
 import { Noto_Sans_KR } from "next/font/google";
 import localFont from "next/font/local";
 import Footer from "@/components/Footer/Footer";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "메이플랜드 옥션",
@@ -64,6 +65,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${process.env.NEXT_PUBLIC_adsKey}`}
+          crossOrigin="anonymous"
+        ></script>
+        <meta
+          name="google-adsense-account"
+          content={`ca-pub-${process.env.adsKey}`}
+        ></meta>
+      </head>
       <body className={`${Pretendard.className} ${NotoSansKR.className}`}>
         <TanstackProvider>
           <RecoilRootProvider>
@@ -73,6 +85,7 @@ export default function RootLayout({
             <Footer />
           </RecoilRootProvider>
         </TanstackProvider>
+        <Analytics />
       </body>
     </html>
   );

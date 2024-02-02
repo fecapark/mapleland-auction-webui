@@ -73,7 +73,7 @@ export default function RootLayout({
         ></script>
         <meta
           name="google-adsense-account"
-          content={`ca-pub-${process.env.adsKey}`}
+          content={`ca-pub-${process.env.NEXT_PUBLIC_adsKey}`}
         ></meta>
       </head>
       <body className={`${Pretendard.className} ${NotoSansKR.className}`}>

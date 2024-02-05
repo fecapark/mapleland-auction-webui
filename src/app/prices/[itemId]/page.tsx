@@ -5,7 +5,12 @@ import ItemPriceChart from "@/components/pages/ItemPriceChart/ItemPriceChart";
 import ItemPriceNavigator from "@/components/pages/Navigator/ItemPriceNavigator";
 import PriceCardContainer from "@/components/pages/PriceCardContainer/PriceCardContainer";
 import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
-import { getItemList, getItemStatistics } from "@/server/actions";
+import {
+  StatisticsData,
+  getGGItemStatistics,
+  getItemList,
+  getItemStatistics,
+} from "@/server/actions";
 import { datestrAscCompareFn } from "@/utils/date";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
@@ -18,6 +23,8 @@ import FixedPriceCardContainer from "@/components/pages/PriceCardContainer/Fixed
 import { IRecentPriceData } from "@/shared/types";
 import { useInView } from "react-intersection-observer";
 import ImbedHeader from "@/components/pages/ImbedHeader/ImbedHeader";
+import { useRecoilValue } from "recoil";
+import { platformPriceNavigatorSectionAtom } from "@/shared/atoms";
 
 interface RouteParams {
   itemId: string;
@@ -65,12 +72,20 @@ export default function ItemPricePage({
   params: RouteParams;
 }) {
   const { ref, inView } = useInView();
+  const platformSection = useRecoilValue(platformPriceNavigatorSectionAtom);
 
   const { data: statisticsData, isLoading } = useQuery({
     queryKey: ["statistics", itemId],
     queryFn: async () => getItemStatistics(itemId),
     placeholderData: undefined,
     staleTime: 1000 * 60 * 60 * 2, // 2시간 동안은 데이터 신뢰 보장
+  });
+
+  const { data: ggStatisticsData, isLoading: isGGLoading } = useQuery({
+    queryKey: ["statistics-gg", itemId],
+    queryFn: async () => getGGItemStatistics(itemId),
+    placeholderData: undefined,
+    staleTime: 1000 * 60 * 30, // 30분 동안은 데이터 신뢰 보장
   });
 
   const { data: itemListData } = useQuery({
@@ -84,11 +99,30 @@ export default function ItemPricePage({
     return itemListData.find(({ id }) => `${id}` === itemId)?.name ?? "";
   }, [itemId, itemListData]);
 
-  const isStatisticsLoading = isLoading || statisticsData === undefined;
-  const isStatisticsNotFound = !isStatisticsLoading && statisticsData === null;
+  const isStatisticsLoading =
+    isLoading ||
+    statisticsData === undefined ||
+    isGGLoading ||
+    ggStatisticsData === undefined;
+
+  const isStatisticsNotFound = useMemo(() => {
+    if (platformSection === "discord")
+      return !isStatisticsLoading && statisticsData === null;
+
+    return !isGGLoading && ggStatisticsData === null;
+  }, [
+    platformSection,
+    isStatisticsLoading,
+    statisticsData,
+    isGGLoading,
+    ggStatisticsData,
+  ]);
 
   const recentData: IRecentPriceData = useMemo(() => {
-    if (!statisticsData)
+    let data =
+      platformSection === "discord" ? statisticsData : ggStatisticsData;
+
+    if (!data)
       return {
         recentDate: null,
         prevDate: null,
@@ -96,18 +130,16 @@ export default function ItemPricePage({
         prevData: null,
       };
 
-    const datesByRecent = Object.keys(statisticsData)
-      .sort(datestrAscCompareFn)
-      .reverse();
+    const datesByRecent = Object.keys(data).sort(datestrAscCompareFn).reverse();
     const recentDatestr = datesByRecent[0];
     const prevDatestr = datesByRecent[1];
     return {
       recentDate: recentDatestr,
       prevDate: prevDatestr,
-      recentData: statisticsData[recentDatestr],
-      prevData: statisticsData[prevDatestr],
+      recentData: data[recentDatestr],
+      prevData: data[prevDatestr],
     };
-  }, [statisticsData]);
+  }, [statisticsData, ggStatisticsData, platformSection]);
 
   return (
     <>
@@ -153,7 +185,13 @@ export default function ItemPricePage({
                   </div>
                 </div>
                 <div className="w-full h-[300px] xs:h-[400px] sm:h-[500px]">
-                  <ItemPriceChart chartData={statisticsData} />
+                  <ItemPriceChart
+                    chartData={
+                      platformSection === "discord"
+                        ? statisticsData
+                        : ggStatisticsData
+                    }
+                  />
                 </div>
               </div>
               {/* 메시지 */}

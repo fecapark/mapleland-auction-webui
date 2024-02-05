@@ -74,6 +74,12 @@ interface RecentTrendingData {
   total_results: TrendingItemData[];
 }
 
+interface RecentTrendingGGData {
+  date: string;
+  hour: number;
+  price: TrendingItemData[];
+}
+
 interface StatisticValueData {
   average: number;
   expensive: number;
@@ -151,10 +157,38 @@ export async function getItemStatistics(
   return data;
 }
 
+export async function getGGItemStatistics(
+  itemId: string
+): Promise<Record<string, StatisticsData> | null> {
+  const data = (
+    await getDoc(doc(collection(db, itemId), "statistics-gg"))
+  ).data() as Record<string, StatisticsData> | null;
+
+  if (!data) return null;
+  const dateWithDatestrAndHour: Record<string, StatisticsData> = {};
+  Object.entries(data).forEach(([datestr, dataAboutHour]) => {
+    Object.entries(dataAboutHour).forEach(([hour, data]) => {
+      const datestrWithHour = `${datestr}.${hour}:`;
+      if (new Date() < new Date(datestrWithHour)) return;
+      dateWithDatestrAndHour[datestrWithHour] = data;
+    });
+  });
+  return dateWithDatestrAndHour;
+}
+
 export async function getTrendingData(): Promise<RecentTrendingData | null> {
   const data = (
     await getDoc(doc(collection(db, "trending"), "recent"))
   ).data() as RecentTrendingData | null;
+
+  if (!data) return null;
+  return data;
+}
+
+export async function getTrendingGGData(): Promise<RecentTrendingGGData | null> {
+  const data = (
+    await getDoc(doc(collection(db, "trending"), "recent-gg"))
+  ).data() as RecentTrendingGGData | null;
 
   if (!data) return null;
   return data;

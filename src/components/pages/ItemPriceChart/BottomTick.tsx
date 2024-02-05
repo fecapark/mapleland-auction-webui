@@ -1,28 +1,56 @@
+import { platformPriceNavigatorSectionAtom } from "@/shared/atoms";
+import { useRecoilValue } from "recoil";
+
 interface Props {
   tick: any;
 }
 
-const getDateContent = (date: Date) => {
+const getDateContent = (date: Date, platformSection: "discord" | "gg") => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
+  const hour = date.getHours() - 9;
 
-  // 새해에는 년도만 표시
-  if (month === 1 && day === 1)
-    return { big: true, bold: true, content: `${year}` };
+  if (platformSection === "discord") {
+    // 새해에는 년도만 표시
+    if (month === 1 && day === 1)
+      return { big: true, bold: true, content: `${year}` };
 
-  // 매 월마다 월 표시
-  if (day === 1) return { big: false, bold: true, content: `${month}월` };
+    // 매 월마다 월 표시
+    if (day === 1) return { big: false, bold: true, content: `${month}월` };
 
-  // 매 3일 마다 일 표시
-  if (day % 3 === 0) return { big: false, bold: false, content: `${day}` };
+    // 매 3일 마다 일 표시
+    if (day % 3 === 0) return { big: false, bold: false, content: `${day}` };
+  }
+
+  if (platformSection === "gg") {
+    // 새해에는 년도만 표시
+    if (month === 1 && day === 1 && hour === 0)
+      return { big: true, bold: true, content: `${year}` };
+
+    // 매 월마다 월 표시
+    if (day === 1 && hour === 0)
+      return { big: false, bold: true, content: `${month}월` };
+
+    // 매일마다 일 표시
+    if (hour === 0) return { big: false, bold: true, content: `${day}` };
+
+    // 매 3시간 마다 시간 표시
+    if (hour % 1 === 0)
+      return {
+        big: false,
+        bold: false,
+        content: `${hour < 10 ? "0" : ""}${hour}:00`,
+      };
+  }
 
   return { big: false, bold: false, content: null };
 };
 
 export default function BottomTick({ tick }: Props) {
+  const platformSection = useRecoilValue(platformPriceNavigatorSectionAtom);
   const date = new Date(tick.value);
-  const { big, bold, content } = getDateContent(date);
+  const { big, bold, content } = getDateContent(date, platformSection);
 
   return (
     <g

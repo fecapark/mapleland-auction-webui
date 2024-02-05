@@ -18,6 +18,11 @@ export const itemPriceNavigatorSectionAtom = atom<
   default: "overview",
 });
 
+export const platformPriceNavigatorSectionAtom = atom<"discord" | "gg">({
+  key: "platformPriceNavigatorSection",
+  default: "discord",
+});
+
 export const isModalActiveAtom = atom<boolean>({
   key: "isModalActive",
   default: false,

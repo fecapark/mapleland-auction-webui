@@ -9,12 +9,15 @@ import {
   getItemImageSource,
   getItemList,
   getTrendingData,
+  getTrendingGGData,
 } from "@/server/actions";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaMinus } from "react-icons/fa6";
 import { IoTriangleSharp } from "react-icons/io5";
 import { MdWarning } from "react-icons/md";
+import { FaDiscord } from "react-icons/fa";
+import { useMemo, useState } from "react";
 
 function TrendingSectionItem({
   id,
@@ -143,17 +146,46 @@ function TrendingSectionItem({
   );
 }
 
+function TrendingSectionNavItem({
+  children,
+  selected,
+  onClick,
+}: {
+  children: React.ReactNode;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <div
+      className={`flex-center px-4 py-1 rounded-md ${
+        selected
+          ? "bg-[#202022] cursor-default"
+          : "hover:bg-[#6a6a6c] cursor-pointer text-[#a0a0a0]"
+      }`}
+      onClick={onClick}
+    >
+      {children}
+    </div>
+  );
+}
+
 function TrendingSection({
   title,
   description,
   datas,
   type,
+  supportOther = false,
+  ggDatas = [],
 }: {
   title: string;
   description: string;
   datas: TrendingItemData[];
   type: "price" | "volume";
+  supportOther?: boolean;
+  ggDatas?: TrendingItemData[];
 }) {
+  const [section, setSection] = useState<"discord" | "gg">("discord");
+
   const { data: itemListData } = useQuery({
     queryKey: ["item-list"],
     queryFn: () => getItemList(),
@@ -168,25 +200,53 @@ function TrendingSection({
   return (
     <div>
       <div className="mb-6 flex flex-col">
-        <span className="font-medium text-2xl mb-1">{title}</span>
+        <div
+          className={`mb-1 flex ${
+            supportOther ? "justify-between" : "justify-start"
+          } items-center`}
+        >
+          <span className="font-medium text-2xl">{title}</span>
+          {supportOther ? (
+            <div className="bg-[#424244] p-1 flex rounded-lg">
+              <TrendingSectionNavItem
+                onClick={() => setSection("discord")}
+                selected={section === "discord"}
+              >
+                <IconWrapper className="text-lg">
+                  <FaDiscord />
+                </IconWrapper>
+              </TrendingSectionNavItem>
+              <TrendingSectionNavItem
+                onClick={() => setSection("gg")}
+                selected={section === "gg"}
+              >
+                <div className="leading-[1.1] font-bold text-sm tracking-tight">
+                  .GG
+                </div>
+              </TrendingSectionNavItem>
+            </div>
+          ) : null}
+        </div>
         <span className="text-[#b2b2b5] text-sm">{description}</span>
       </div>
       <div className="flex flex-col gap-[18px] pl-2">
-        {...datas.map(({ id, value, rank_diff, value_diff, reliable }, i) => {
-          return (
-            <TrendingSectionItem
-              key={id}
-              id={id}
-              name={getItemName(id)}
-              rank={i + 1}
-              value={value}
-              rankDiff={rank_diff}
-              valueDiff={value_diff}
-              type={type}
-              warn={!reliable}
-            />
-          );
-        })}
+        {...(section === "discord" ? datas : ggDatas).map(
+          ({ id, value, rank_diff, value_diff, reliable }, i) => {
+            return (
+              <TrendingSectionItem
+                key={id}
+                id={id}
+                name={getItemName(id)}
+                rank={i + 1}
+                value={value}
+                rankDiff={rank_diff}
+                valueDiff={value_diff}
+                type={type}
+                warn={!reliable}
+              />
+            );
+          }
+        )}
       </div>
     </div>
   );
@@ -231,7 +291,18 @@ export default function Trending() {
     staleTime: 1000 * 60 * 60 * 2, // 2시간 동안은 데이터 신뢰 보장
   });
 
-  const isTrendingLoading = isLoading || trendingData === undefined;
+  const { data: trendingGGData, isLoading: isGGLoading } = useQuery({
+    queryKey: ["trending-gg"],
+    queryFn: getTrendingGGData,
+    placeholderData: undefined,
+    staleTime: 1000 * 60 * 3, // 30분 동안은 데이터 신뢰 보장
+  });
+
+  const isTrendingLoading =
+    isLoading ||
+    trendingData === undefined ||
+    isGGLoading ||
+    trendingGGData === undefined;
 
   return (
     <>
@@ -283,15 +354,18 @@ export default function Trending() {
           </div>
 
           <div className="mt-16 w-full">
-            {isTrendingLoading ? null : trendingData === null ? (
+            {isTrendingLoading ? null : trendingData === null ||
+              trendingGGData === null ? (
               "데이터를 불러올 수 없습니다."
             ) : (
               <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8">
                 <TrendingSection
                   title="가격"
                   description="사람들이 원하는 거래가들의 평균치를 의미해요."
-                  datas={trendingData.cost}
                   type="price"
+                  supportOther={true}
+                  datas={trendingData.cost}
+                  ggDatas={trendingGGData.price}
                 />
                 <TrendingSection
                   title="거래량"

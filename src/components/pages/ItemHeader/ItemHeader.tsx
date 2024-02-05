@@ -9,6 +9,24 @@ interface Props {
   updatedAt: string | null;
 }
 
+function parseUpdatedAt(updatedAt: string) {
+  console.log(updatedAt);
+
+  const date = new Date(updatedAt);
+  const curDate = new Date();
+  const diff = (+curDate - +date) / 1000;
+  const diffHour = Math.floor(diff / 3600);
+  const diffDay = Math.floor(diff / 86400);
+
+  if (diffDay >= 1) {
+    return `${date.getFullYear() - 2000}.${date.getMonth() < 9 ? "0" : ""}${
+      date.getMonth() + 1
+    }.${date.getDate() < 10 ? "0" : ""}${date.getDate()}`;
+  }
+
+  return `${diffHour}시간 전`;
+}
+
 export default function ItemHeader({ itemId, itemName, updatedAt }: Props) {
   return (
     <>
@@ -22,7 +40,7 @@ export default function ItemHeader({ itemId, itemName, updatedAt }: Props) {
             <span className="font-medium text-[#a0a0a0] text-xs xs:text-sm">
               {updatedAt === null
                 ? "데이터 없음"
-                : `${updatedAt.split("-").join(".")}에 업데이트 됨`}
+                : `${parseUpdatedAt(updatedAt)}에 업데이트 됨`}
             </span>
           </div>
         </div>

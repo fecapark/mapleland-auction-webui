@@ -4,6 +4,7 @@ import { ResponsiveLine, Serie } from "@nivo/line";
 import Tooltip from "./Tooltip";
 import {
   itemPriceNavigatorSectionAtom,
+  platformPriceNavigatorSectionAtom,
   xsMediaMatchedAtom,
 } from "@/shared/atoms";
 import { useRecoilValue } from "recoil";
@@ -54,6 +55,9 @@ const parseToSeries = (
 export default function ItemPriceChart({ chartData }: Props) {
   const { isXS } = useRecoilValue(xsMediaMatchedAtom);
   const section = useRecoilValue(itemPriceNavigatorSectionAtom);
+  const platformSection = useRecoilValue(platformPriceNavigatorSectionAtom);
+
+  console.log(chartData);
 
   if (chartData === null) return <div></div>;
 
@@ -84,7 +88,11 @@ export default function ItemPriceChart({ chartData }: Props) {
         bottom: isXS ? 40 : 50,
         left: isXS ? 50 : 75,
       }}
-      xScale={{ type: "time", format: "%Y-%m-%d", precision: "hour" }}
+      xScale={{
+        type: "time",
+        format: platformSection === "discord" ? "%Y-%m-%d" : "%Y-%m-%d.%H:",
+        precision: "hour",
+      }}
       yScale={{
         type: "linear",
         min: "auto",
@@ -95,7 +103,8 @@ export default function ItemPriceChart({ chartData }: Props) {
       axisTop={null}
       axisBottom={{
         renderTick: (tick) => <BottomTick tick={tick} />,
-        tickValues: "every 1 days",
+        tickValues:
+          platformSection === "discord" ? "every 1 days" : "every 1 hours",
         tickSize: 12,
         tickPadding: 10,
         tickRotation: 0,

@@ -21,9 +21,11 @@ function parseTimestamp(timestamp: string) {
   const hour = date.getHours() % 12;
   const minute = date.getMinutes();
 
-  return `${year}.${month < 10 ? "0" : ""}${month}.${day} ${
-    isPM ? "오후" : "오전"
-  } ${hour}:${minute < 10 ? "0" : ""}${minute}`;
+  return `${year}.${month < 10 ? "0" : ""}${month}.${
+    day < 10 ? "0" : ""
+  }${day} ${isPM ? "오후" : "오전"} ${hour < 10 ? "0" : ""}${hour}:${
+    minute < 10 ? "0" : ""
+  }${minute}`;
 }
 
 export default function DiscordMessage({ message }: Props) {

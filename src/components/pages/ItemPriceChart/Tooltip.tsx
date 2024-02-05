@@ -1,8 +1,10 @@
 import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
+import { platformPriceNavigatorSectionAtom } from "@/shared/atoms";
 import { Point } from "@nivo/line";
 import { Roboto } from "next/font/google";
 import { IoMdChatbubbles } from "react-icons/io";
 import { MdArrowUpward, MdShowChart } from "react-icons/md";
+import { useRecoilValue } from "recoil";
 
 interface Props {
   point: Point;
@@ -18,6 +20,7 @@ const getTooltipIcon = (serieId: string | number) => {
 };
 
 export default function Tooltip({ point }: Props) {
+  const platformSection = useRecoilValue(platformPriceNavigatorSectionAtom);
   const date = new Date(point.data.xFormatted);
   const price = point.data.yFormatted;
 
@@ -35,7 +38,13 @@ export default function Tooltip({ point }: Props) {
         </div>
         <span className="text-xs font-medium text-[#a0a0a0]">
           {date.getFullYear()}-{date.getMonth() < 9 ? "0" : ""}
-          {date.getMonth() + 1}-{date.getDate()}
+          {date.getMonth() + 1}-{date.getDate() < 10 ? "0" : ""}
+          {date.getDate()}{" "}
+          {platformSection === "gg"
+            ? (date.getHours() - 9 < 10 ? "0" : "") +
+              (date.getHours() - 9).toString() +
+              ":00"
+            : ""}
         </span>
       </div>
       <div className="flex items-center gap-1">

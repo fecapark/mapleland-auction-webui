@@ -1,6 +1,8 @@
 // contentlayer.config.ts
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import remarkGfm from "remark-gfm";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeSlug from "rehype-slug";
 
 export const UpdatePost = defineDocumentType(() => ({
   name: "UpdatePost",
@@ -67,6 +69,16 @@ export default makeSource({
   documentTypes: [UpdatePost, NoticePost],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [],
+    rehypePlugins: [
+      rehypeSlug,
+      [
+        rehypeAutolinkHeadings,
+        {
+          properties: {
+            className: ["anchor"],
+          },
+        },
+      ],
+    ],
   },
 });

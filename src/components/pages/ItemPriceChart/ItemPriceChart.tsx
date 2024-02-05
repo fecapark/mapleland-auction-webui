@@ -104,7 +104,7 @@ export default function ItemPriceChart({ chartData }: Props) {
       axisBottom={{
         renderTick: (tick) => <BottomTick tick={tick} />,
         tickValues:
-          platformSection === "discord" ? "every 1 days" : "every 1 hours",
+          platformSection === "discord" ? "every 1 days" : "every 3 hours",
         tickSize: 12,
         tickPadding: 10,
         tickRotation: 0,

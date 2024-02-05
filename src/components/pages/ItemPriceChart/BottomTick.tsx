@@ -9,7 +9,7 @@ const getDateContent = (date: Date, platformSection: "discord" | "gg") => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  const hour = date.getHours() - 9;
+  let hour = date.getUTCHours();
 
   if (platformSection === "discord") {
     // 새해에는 년도만 표시

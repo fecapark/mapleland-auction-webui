@@ -41,8 +41,8 @@ export default function Tooltip({ point }: Props) {
           {date.getMonth() + 1}-{date.getDate() < 10 ? "0" : ""}
           {date.getDate()}{" "}
           {platformSection === "gg"
-            ? (date.getHours() - 9 < 10 ? "0" : "") +
-              (date.getHours() - 9).toString() +
+            ? (date.getUTCHours() < 10 ? "0" : "") +
+              date.getUTCHours().toString() +
               ":00"
             : ""}
         </span>

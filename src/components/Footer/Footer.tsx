@@ -50,7 +50,9 @@ export default function Footer() {
         <FooterButton alerting={true}>
           <Link href="/updates">업데이트</Link>
         </FooterButton>
-        <FooterButton onClick={() => setFAQModal(true)}>FAQ</FooterButton>
+        <FooterButton>
+          <Link href="/notices/faq">FAQ</Link>
+        </FooterButton>
         <FooterButton onClick={() => setReportModal(true)}>
           버그 제보 및 문의하기
         </FooterButton>

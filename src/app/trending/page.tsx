@@ -18,6 +18,8 @@ import { IoTriangleSharp } from "react-icons/io5";
 import { MdWarning } from "react-icons/md";
 import { FaDiscord } from "react-icons/fa";
 import { useMemo, useState } from "react";
+import { useRecoilState } from "recoil";
+import { platformPriceNavigatorSectionAtom } from "@/shared/atoms";
 
 function TrendingSectionItem({
   id,
@@ -149,20 +151,25 @@ function TrendingSectionItem({
 function TrendingSectionNavItem({
   children,
   selected,
+  bgColor = "#202022",
   onClick,
 }: {
   children: React.ReactNode;
   selected: boolean;
+  bgColor?: string;
   onClick: () => void;
 }) {
   return (
     <div
       className={`flex-center px-4 py-1 rounded-md ${
         selected
-          ? "bg-[#202022] cursor-default"
+          ? "cursor-default"
           : "hover:bg-[#6a6a6c] cursor-pointer text-[#a0a0a0]"
       }`}
       onClick={onClick}
+      style={{
+        backgroundColor: selected && bgColor ? bgColor : undefined,
+      }}
     >
       {children}
     </div>
@@ -184,7 +191,9 @@ function TrendingSection({
   supportOther?: boolean;
   ggDatas?: TrendingItemData[];
 }) {
-  const [section, setSection] = useState<"discord" | "gg">("discord");
+  const [platformSection, setPlatformSection] = useRecoilState(
+    platformPriceNavigatorSectionAtom
+  );
 
   const { data: itemListData } = useQuery({
     queryKey: ["item-list"],
@@ -196,6 +205,12 @@ function TrendingSection({
     if (!itemListData) return "";
     return itemListData.find(({ id }) => `${id}` === `${itemId}`)?.name ?? "";
   };
+
+  const renderingDatas = useMemo(() => {
+    if (!supportOther) return datas;
+    if (platformSection === "discord") return datas;
+    return ggDatas;
+  }, [supportOther, platformSection, datas, ggDatas]);
 
   return (
     <div>
@@ -209,16 +224,18 @@ function TrendingSection({
           {supportOther ? (
             <div className="bg-[#424244] p-1 flex rounded-lg">
               <TrendingSectionNavItem
-                onClick={() => setSection("discord")}
-                selected={section === "discord"}
+                onClick={() => setPlatformSection("discord")}
+                selected={platformSection === "discord"}
+                bgColor="#5865f2"
               >
                 <IconWrapper className="text-lg">
                   <FaDiscord />
                 </IconWrapper>
               </TrendingSectionNavItem>
               <TrendingSectionNavItem
-                onClick={() => setSection("gg")}
-                selected={section === "gg"}
+                onClick={() => setPlatformSection("gg")}
+                selected={platformSection === "gg"}
+                bgColor="#FF0044"
               >
                 <div className="leading-[1.1] font-bold text-sm tracking-tight">
                   .GG
@@ -230,7 +247,7 @@ function TrendingSection({
         <span className="text-[#b2b2b5] text-sm">{description}</span>
       </div>
       <div className="flex flex-col gap-[18px] pl-2">
-        {...(section === "discord" ? datas : ggDatas).map(
+        {...renderingDatas.map(
           ({ id, value, rank_diff, value_diff, reliable }, i) => {
             return (
               <TrendingSectionItem

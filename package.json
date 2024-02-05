@@ -33,6 +33,8 @@
     "react-spinners": "^0.13.8",
     "react-syntax-highlighter": "^15.5.0",
     "recoil": "^0.7.7",
+    "rehype-autolink-headings": "^7.1.0",
+    "rehype-slug": "^6.0.0",
     "remark-gfm": "3.0.1",
     "slick-carousel": "^1.8.1"
   },

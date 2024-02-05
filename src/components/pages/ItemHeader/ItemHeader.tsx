@@ -10,8 +10,6 @@ interface Props {
 }
 
 function parseUpdatedAt(updatedAt: string) {
-  console.log(updatedAt);
-
   const date = new Date(updatedAt);
   const curDate = new Date();
   const diff = (+curDate - +date) / 1000;
@@ -24,13 +22,15 @@ function parseUpdatedAt(updatedAt: string) {
     }.${date.getDate() < 10 ? "0" : ""}${date.getDate()}`;
   }
 
+  if (isNaN(diffHour)) return "최소 1시간 전";
+
   return `${diffHour}시간 전`;
 }
 
 export default function ItemHeader({ itemId, itemName, updatedAt }: Props) {
   return (
     <>
-      <div className="relative mb-12 xs:mb-16 pt-8 xs:pt-24 flex-center flex-col gap-4">
+      <div className="relative mb-10 xs:mb-16 pt-12 xs:pt-16 flex-center flex-col gap-4">
         <div className="flex gap-3 xs:gap-6 items-center">
           <div className="w-[48px] xs:w-[52px]">
             <AutoHeightImage src={getItemImageSource(itemId, 2)} alt="" />

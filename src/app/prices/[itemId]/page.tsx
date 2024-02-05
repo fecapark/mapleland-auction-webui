@@ -6,7 +6,6 @@ import ItemPriceNavigator from "@/components/pages/Navigator/ItemPriceNavigator"
 import PriceCardContainer from "@/components/pages/PriceCardContainer/PriceCardContainer";
 import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
 import {
-  StatisticsData,
   getGGItemStatistics,
   getItemList,
   getItemStatistics,
@@ -23,11 +22,41 @@ import FixedPriceCardContainer from "@/components/pages/PriceCardContainer/Fixed
 import { IRecentPriceData } from "@/shared/types";
 import { useInView } from "react-intersection-observer";
 import ImbedHeader from "@/components/pages/ImbedHeader/ImbedHeader";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { platformPriceNavigatorSectionAtom } from "@/shared/atoms";
+import { FaDiscord } from "react-icons/fa";
 
 interface RouteParams {
   itemId: string;
+}
+
+function SmallNavItem({
+  children,
+  selected,
+  bgColor = "#202020",
+  onClick,
+}: {
+  children: React.ReactNode;
+  bgColor?: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <div
+      className={`flex-center rounded-lg px-3 xs:px-4 py-1 xs:py-1 ${
+        selected
+          ? `cursor-default`
+          : "hover:bg-[#6a6a6c] cursor-pointer text-[#a0a0a0]"
+      }`}
+      data-section-selected={selected}
+      onClick={onClick}
+      style={{
+        backgroundColor: selected && bgColor ? bgColor : undefined,
+      }}
+    >
+      {children}
+    </div>
+  );
 }
 
 function ReliabilityWarn() {
@@ -72,7 +101,9 @@ export default function ItemPricePage({
   params: RouteParams;
 }) {
   const { ref, inView } = useInView();
-  const platformSection = useRecoilValue(platformPriceNavigatorSectionAtom);
+  const [platformSection, setPlatformSection] = useRecoilState(
+    platformPriceNavigatorSectionAtom
+  );
 
   const { data: statisticsData, isLoading } = useQuery({
     queryKey: ["statistics", itemId],
@@ -149,7 +180,27 @@ export default function ItemPricePage({
           <Loader />
         </div>
       ) : (
-        <main className="flex items-start justify-center px-4 xs:px-0">
+        <main className="flex flex-col items-center justify-start px-4 xs:px-0">
+          <div className="bg-[#424244] p-1 flex gap-1 rounded-lg">
+            <SmallNavItem
+              onClick={() => setPlatformSection("discord")}
+              selected={platformSection === "discord"}
+              bgColor="#5865f2"
+            >
+              <IconWrapper className="text-xl">
+                <FaDiscord />
+              </IconWrapper>
+            </SmallNavItem>
+            <SmallNavItem
+              onClick={() => setPlatformSection("gg")}
+              selected={platformSection === "gg"}
+              bgColor="#FF0044"
+            >
+              <div className="leading-[1.1] font-bold text-base tracking-tight">
+                .GG
+              </div>
+            </SmallNavItem>
+          </div>
           <FixedPriceCardContainer
             itemId={itemId}
             recentData={recentData}

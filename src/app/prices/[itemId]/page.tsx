@@ -106,9 +106,6 @@ export default function ItemPricePage({
   params: RouteParams;
 }) {
   const { ref, inView } = useInView();
-  const setItemPriceNavSection = useSetRecoilState(
-    itemPriceNavigatorSectionAtom
-  );
   const [platformSection, setPlatformSection] = useRecoilState(
     platformPriceNavigatorSectionAtom
   );
@@ -195,6 +192,12 @@ export default function ItemPricePage({
       setIsSeparated(true);
     }
   }, [platformSection, recentData]);
+
+  useEffect(() => {
+    return () => {
+      setChartTickValue("day");
+    };
+  }, [setChartTickValue]);
 
   return (
     <>

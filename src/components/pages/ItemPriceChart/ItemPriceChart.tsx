@@ -216,7 +216,9 @@ export default function ItemPriceChart({ chartData }: Props) {
           platformSection === "discord"
             ? "every 1 days"
             : chartTickValue === "hour"
-            ? "every 3 hours"
+            ? isXS
+              ? "every 8 hours"
+              : "every 6 hours"
             : "every 1 days",
         tickSize: 12,
         tickPadding: 10,

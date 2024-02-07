@@ -18,8 +18,11 @@ import { IoTriangleSharp } from "react-icons/io5";
 import { MdWarning } from "react-icons/md";
 import { FaDiscord } from "react-icons/fa";
 import { useMemo, useState } from "react";
-import { useRecoilState } from "recoil";
-import { platformPriceNavigatorSectionAtom } from "@/shared/atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  chartTickValueAtom,
+  platformPriceNavigatorSectionAtom,
+} from "@/shared/atoms";
 
 function TrendingSectionItem({
   id,
@@ -194,6 +197,7 @@ function TrendingSection({
   const [platformSection, setPlatformSection] = useRecoilState(
     platformPriceNavigatorSectionAtom
   );
+  const setChartTickValue = useSetRecoilState(chartTickValueAtom);
 
   const { data: itemListData } = useQuery({
     queryKey: ["item-list"],
@@ -224,7 +228,10 @@ function TrendingSection({
           {supportOther ? (
             <div className="bg-[#424244] p-1 flex rounded-lg">
               <TrendingSectionNavItem
-                onClick={() => setPlatformSection("discord")}
+                onClick={() => {
+                  setPlatformSection("discord");
+                  setChartTickValue("day");
+                }}
                 selected={platformSection === "discord"}
                 bgColor="#5865f2"
               >

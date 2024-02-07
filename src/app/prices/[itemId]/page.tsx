@@ -12,7 +12,7 @@ import {
 } from "@/server/actions";
 import { datestrAscCompareFn } from "@/utils/date";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { MdWarning, MdSsidChart, MdInfoOutline } from "react-icons/md";
 import MessageContainer from "@/components/pages/MessageContainer/MessageContainer";
 import useModal from "@/hooks/useModal";
@@ -22,9 +22,14 @@ import FixedPriceCardContainer from "@/components/pages/PriceCardContainer/Fixed
 import { IRecentPriceData } from "@/shared/types";
 import { useInView } from "react-intersection-observer";
 import ImbedHeader from "@/components/pages/ImbedHeader/ImbedHeader";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { platformPriceNavigatorSectionAtom } from "@/shared/atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  chartTickValueAtom,
+  itemPriceNavigatorSectionAtom,
+  platformPriceNavigatorSectionAtom,
+} from "@/shared/atoms";
 import { FaDiscord } from "react-icons/fa";
+import { set } from "date-fns";
 
 interface RouteParams {
   itemId: string;
@@ -101,9 +106,15 @@ export default function ItemPricePage({
   params: RouteParams;
 }) {
   const { ref, inView } = useInView();
+  const setItemPriceNavSection = useSetRecoilState(
+    itemPriceNavigatorSectionAtom
+  );
   const [platformSection, setPlatformSection] = useRecoilState(
     platformPriceNavigatorSectionAtom
   );
+  const [chartTickValue, setChartTickValue] =
+    useRecoilState(chartTickValueAtom);
+  const [isSeparated, setIsSeparated] = useState(false);
 
   const { data: statisticsData, isLoading } = useQuery({
     queryKey: ["statistics", itemId],
@@ -172,6 +183,19 @@ export default function ItemPricePage({
     };
   }, [statisticsData, ggStatisticsData, platformSection]);
 
+  const disableOverview = useMemo(() => {
+    return isSeparated && platformSection === "discord";
+  }, [isSeparated, platformSection]);
+
+  useEffect(() => {
+    if (platformSection === "gg") return;
+    if (!recentData.recentData) return;
+
+    if (recentData.recentData.separated) {
+      setIsSeparated(true);
+    }
+  }, [platformSection, recentData]);
+
   return (
     <>
       <ImbedHeader />
@@ -183,7 +207,10 @@ export default function ItemPricePage({
         <main className="flex flex-col items-center justify-start px-4 xs:px-0">
           <div className="bg-[#424244] p-1 flex gap-1 rounded-lg">
             <SmallNavItem
-              onClick={() => setPlatformSection("discord")}
+              onClick={() => {
+                setPlatformSection("discord");
+                setChartTickValue("day");
+              }}
               selected={platformSection === "discord"}
               bgColor="#5865f2"
             >
@@ -212,7 +239,7 @@ export default function ItemPricePage({
               itemName={itemName}
               updatedAt={recentData.recentDate}
             />
-            <ItemPriceNavigator />
+            <ItemPriceNavigator disableOverview={disableOverview} />
             {!isStatisticsNotFound && !recentData.recentData?.reliable ? (
               <ReliabilityWarn />
             ) : null}
@@ -227,12 +254,28 @@ export default function ItemPricePage({
             <div className="max-w-[auto] xs:max-w-[1000px] w-full px-0 xs:px-[35px]">
               {/* 차트 */}
               <div className="w-full mt-6 py-4 card-border bg-[#1F1F22]">
-                <div className="px-6 xs:px-8">
+                <div className="px-6 xs:px-8 flex justify-between items-center">
                   <div className="flex items-center gap-1 mb-2">
                     <IconWrapper className="text-xl">
                       <MdSsidChart />
                     </IconWrapper>
                     <span>시세 변동</span>
+                  </div>
+                  <div className="bg-[#424244] p-1 flex gap-1 rounded-lg text-sm">
+                    <SmallNavItem
+                      onClick={() => setChartTickValue("day")}
+                      selected={chartTickValue === "day"}
+                    >
+                      일
+                    </SmallNavItem>
+                    {platformSection === "discord" ? null : (
+                      <SmallNavItem
+                        onClick={() => setChartTickValue("hour")}
+                        selected={chartTickValue === "hour"}
+                      >
+                        시간
+                      </SmallNavItem>
+                    )}
                   </div>
                 </div>
                 <div className="w-full h-[300px] xs:h-[400px] sm:h-[500px]">

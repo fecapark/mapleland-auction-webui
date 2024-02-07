@@ -32,12 +32,14 @@ export default function ReliabilityWarnInfo() {
       </div>
 
       <div className="bg-[#00000033] py-2 px-2 italic text-[#b2b2b6] rounded-md mb-3">
-        대부분의 사람들은 기존 거래 가격에 맞추어 거래를 진행하려고 한다.
+        도배자 및 장사꾼을 제외한 대부분의 사람들은 기존 거래 가격에 맞추어
+        거래를 진행하려고 한다.
       </div>
 
       <div className="mb-3">
-        즉, 기존의 거래 가격에 대한 평균치를 구하고, 그 가격을 기준으로 통계적인
-        방법들을 사용하여 특이값들을 제거하는 방법으로 시세를 구하고 있어요.
+        즉, 도배 메시지와 장사꾼들의 메시지를 제외한 뒤, 기존의 거래 가격에 대한
+        평균치를 구하고, 그 가격을 기준으로 통계적인 방법들을 사용하여
+        특이값들을 제거하는 방법으로 시세를 구하고 있어요.
       </div>
       <div className="mb-2 text-[15px] font-semibold text-[#e2e2e5] pt-3">
         # 신뢰성이 낮은 경우

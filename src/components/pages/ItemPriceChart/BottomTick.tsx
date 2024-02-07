@@ -1,15 +1,17 @@
 import { platformPriceNavigatorSectionAtom } from "@/shared/atoms";
+import dayjs from "dayjs";
 import { useRecoilValue } from "recoil";
 
 interface Props {
   tick: any;
 }
 
-const getDateContent = (date: Date, platformSection: "discord" | "gg") => {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  let hour = date.getUTCHours();
+const getDateContent = (datestr: string, platformSection: "discord" | "gg") => {
+  const date = dayjs(datestr, "YYYY-MM-DD HH:mm:ss").subtract(9, "hour");
+  const year = date.get("year");
+  const month = date.get("month") + 1;
+  const day = date.get("date");
+  let hour = date.get("hour");
 
   if (platformSection === "discord") {
     // 새해에는 년도만 표시
@@ -49,8 +51,7 @@ const getDateContent = (date: Date, platformSection: "discord" | "gg") => {
 
 export default function BottomTick({ tick }: Props) {
   const platformSection = useRecoilValue(platformPriceNavigatorSectionAtom);
-  const date = new Date(tick.value);
-  const { big, bold, content } = getDateContent(date, platformSection);
+  const { big, bold, content } = getDateContent(tick.value, platformSection);
 
   return (
     <g

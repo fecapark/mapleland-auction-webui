@@ -2,6 +2,7 @@
 
 import AutoHeightImage from "@/components/utils/AutoHeightImage/AutoHeightImage";
 import { getItemImageSource } from "@/server/actions";
+import dayjs from "dayjs";
 
 interface Props {
   itemId: string;
@@ -10,16 +11,16 @@ interface Props {
 }
 
 function parseUpdatedAt(updatedAt: string) {
-  const date = new Date(updatedAt);
-  const curDate = new Date();
-  const diff = (+curDate - +date) / 1000;
+  const date = dayjs(updatedAt, "YYYY-MM-DD HH:mm:ss");
+  const curDate = dayjs();
+  const diff = curDate.diff(date, "second");
   const diffHour = Math.floor(diff / 3600);
   const diffDay = Math.floor(diff / 86400);
 
   if (diffDay >= 1) {
-    return `${date.getFullYear() - 2000}.${date.getMonth() < 9 ? "0" : ""}${
-      date.getMonth() + 1
-    }.${date.getDate() < 10 ? "0" : ""}${date.getDate()}`;
+    return `${date.get("year") - 2000}.${date.get("month") < 9 ? "0" : ""}${
+      date.get("month") + 1
+    }.${date.get("date") < 10 ? "0" : ""}${date.get("date")}`;
   }
 
   if (isNaN(diffHour)) return "최소 1시간 전";

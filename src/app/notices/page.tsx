@@ -60,6 +60,7 @@ export default function Updates() {
         <div className="w-full flex flex-col gap-6">
           {allNoticePosts
             .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
+            .slice(0, -1)
             .map((post) => (
               <UpdateCard
                 key={post._id}

@@ -8,6 +8,7 @@ import {
   getDocs,
   where,
 } from "firebase/firestore";
+import dayjs from "dayjs";
 
 export interface ItemData {
   id: number;
@@ -84,6 +85,7 @@ interface StatisticValueData {
   average: number;
   expensive: number;
   frequent: number;
+  minimum: number;
 }
 
 export interface StatisticsData {
@@ -91,6 +93,7 @@ export interface StatisticsData {
   seller: StatisticValueData;
   overview: StatisticValueData;
   reliable: boolean;
+  separated: boolean;
 }
 
 export interface ItemMessageData {
@@ -168,8 +171,8 @@ export async function getGGItemStatistics(
   const dateWithDatestrAndHour: Record<string, StatisticsData> = {};
   Object.entries(data).forEach(([datestr, dataAboutHour]) => {
     Object.entries(dataAboutHour).forEach(([hour, data]) => {
-      const datestrWithHour = `${datestr}.${hour}:`;
-      if (new Date() < new Date(datestrWithHour)) return;
+      const datestrWithHour = `${datestr} ${hour}:00:00`;
+      if (dayjs().diff(dayjs(datestrWithHour)) < 0) return;
       dateWithDatestrAndHour[datestrWithHour] = data;
     });
   });

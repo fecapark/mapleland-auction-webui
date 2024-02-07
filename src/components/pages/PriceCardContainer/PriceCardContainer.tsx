@@ -1,10 +1,16 @@
 import { IoMdChatbubbles } from "react-icons/io";
-import { MdArrowUpward, MdShowChart, MdWarning } from "react-icons/md";
+import {
+  MdArrowDownward,
+  MdArrowUpward,
+  MdShowChart,
+  MdWarning,
+} from "react-icons/md";
 import PriceCard from "./PriceCard";
 import { useRecoilValue } from "recoil";
 import { itemPriceNavigatorSectionAtom } from "@/shared/atoms";
 import { StatisticsData } from "@/server/actions";
 import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
+import SwitchablePriceCard from "./SwitchablePriceCard";
 
 function NoData({
   sectionType,
@@ -49,11 +55,15 @@ export default function PriceCardContainer({
 
   return (
     <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 w-full lg:w-auto">
-      <PriceCard
-        icon={<MdArrowUpward />}
-        title="최고 거래가"
-        price={recentData[section].expensive}
-        prevPrice={prevData === null ? null : prevData[section].expensive}
+      <SwitchablePriceCard
+        frontIcon={<MdArrowUpward />}
+        frontTitle="최고 거래가"
+        backIcon={<MdArrowDownward />}
+        backTitle="최저 거래가"
+        frontPrice={recentData[section].expensive}
+        backPrice={recentData[section].minimum}
+        frontPrevPrice={prevData === null ? null : prevData[section].expensive}
+        backPrevPrice={prevData === null ? null : prevData[section].minimum}
       />
       <PriceCard
         icon={<MdShowChart />}

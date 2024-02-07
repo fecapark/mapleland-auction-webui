@@ -71,15 +71,18 @@ export default function FixedPriceCardSlider({
     frameRef.current.style.width = "230px";
 
     requestAnimationFrame(() => {
-      Array.from(sliderRef.current!.children).forEach((child) => {
+      if (!sliderRef.current) return;
+      if (!frameRef.current) return;
+
+      Array.from(sliderRef.current.children).forEach((child) => {
         const { width: childWidth, height: childHeight } =
           child.getBoundingClientRect();
         width = Math.max(width, childWidth + 4);
         height = Math.min(height, childHeight);
       });
 
-      frameRef.current!.style.width = `${width}px`;
-      frameRef.current!.style.height = `${height}px`;
+      frameRef.current.style.width = `${width}px`;
+      frameRef.current.style.height = `${height}px`;
     });
   }, [isXS, frameRef, sliderRef]);
 

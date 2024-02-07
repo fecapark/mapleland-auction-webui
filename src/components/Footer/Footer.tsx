@@ -64,8 +64,8 @@ export default function Footer() {
           reserved.
         </span>
         <span className="text-center">
-          메이플랜드 옥션의 모든 시세 데이터는 어떠한 경우에도 악의적으로
-          조작되거나 왜곡된 데이터가 아님을 약속드립니다.
+          메이플랜드 옥션의 모든 시세 데이터는 어떠한 경우에도 운영진이
+          악의적으로 조작 및 왜곡하지 않음을 약속드립니다.
         </span>
       </div>
     </footer>

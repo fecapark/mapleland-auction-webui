@@ -1,6 +1,7 @@
 import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
 import { platformPriceNavigatorSectionAtom } from "@/shared/atoms";
 import { Point } from "@nivo/line";
+import dayjs from "dayjs";
 import { Roboto } from "next/font/google";
 import { IoMdChatbubbles } from "react-icons/io";
 import { MdArrowUpward, MdShowChart } from "react-icons/md";
@@ -21,7 +22,10 @@ const getTooltipIcon = (serieId: string | number) => {
 
 export default function Tooltip({ point }: Props) {
   const platformSection = useRecoilValue(platformPriceNavigatorSectionAtom);
-  const date = new Date(point.data.xFormatted);
+  const date = dayjs(point.data.xFormatted, "YYYY-MM-DD HH:mm:ss").subtract(
+    9,
+    "hour"
+  );
   const price = point.data.yFormatted;
 
   return (
@@ -37,12 +41,12 @@ export default function Tooltip({ point }: Props) {
           <span className="text-sm font-medium">{point.serieId}</span>
         </div>
         <span className="text-xs font-medium text-[#a0a0a0]">
-          {date.getFullYear()}-{date.getMonth() < 9 ? "0" : ""}
-          {date.getMonth() + 1}-{date.getDate() < 10 ? "0" : ""}
-          {date.getDate()}{" "}
+          {date.get("year")}-{date.get("month") < 9 ? "0" : ""}
+          {date.get("month") + 1}-{date.get("date") < 10 ? "0" : ""}
+          {date.get("date")}{" "}
           {platformSection === "gg"
-            ? (date.getUTCHours() < 10 ? "0" : "") +
-              date.getUTCHours().toString() +
+            ? (date.get("hour") < 10 ? "0" : "") +
+              date.get("hour").toString() +
               ":00"
             : ""}
         </span>

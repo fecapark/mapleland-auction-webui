@@ -12,6 +12,7 @@ import { TD, TR, Table } from "@/components/MD/table";
 import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
 import { MdArrowBack } from "react-icons/md";
 import PostBackButton from "@/components/pages/PostBackButton/PostBackButton";
+import { LI, UL } from "@/components/MD/list";
 
 const mdxComponents: MDXComponents = {
   a: ({
@@ -36,6 +37,8 @@ const mdxComponents: MDXComponents = {
   h1: ({ children }) => <H1>{children}</H1>,
   h2: ({ children }) => <H2>{children}</H2>,
   h3: ({ children }) => <H3>{children}</H3>,
+  ul: ({ children }) => <UL>{children}</UL>,
+  li: ({ children }) => <LI>{children}</LI>,
 };
 
 export const generateStaticParams = async () => {

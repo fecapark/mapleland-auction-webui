@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.mlauction.net
+
+# Sitemaps
+Sitemap: https://www.mlauction.net/sitemap.xml

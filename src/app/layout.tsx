@@ -13,7 +13,8 @@ import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "메이플랜드 옥션",
-  description: "메이플랜드 아이템들의 실시간 시세를 검색해보세요.",
+  description:
+    "메랜 옥션 | 메이플랜드 아이템들의 현재 시세 및 거래가를 검색해보세요.",
 };
 
 const NotoSansKR = Noto_Sans_KR({ subsets: ["latin"] });

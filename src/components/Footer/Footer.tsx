@@ -2,9 +2,8 @@
 
 import useModal from "@/hooks/useModal";
 import Report from "../modals/contents/Report";
-import { useEffect } from "react";
-import FAQModal from "../modals/contents/FAQ";
 import Link from "next/link";
+import BoostModal from "../modals/contents/Boost";
 
 function FooterButton({
   alerting = false,
@@ -36,9 +35,9 @@ export default function Footer() {
     content: <Report />,
   });
 
-  const setFAQModal = useModal({
-    title: "FAQ",
-    content: <FAQModal />,
+  const setBoostModal = useModal({
+    title: "후원",
+    content: <BoostModal />,
   });
 
   return (
@@ -56,6 +55,7 @@ export default function Footer() {
         <FooterButton onClick={() => setReportModal(true)}>
           버그 제보 및 문의하기
         </FooterButton>
+        <FooterButton onClick={() => setBoostModal(true)}>후원</FooterButton>
       </div>
 
       <div className="flex-center gap-1 flex-col text-xs xs:text-sm">

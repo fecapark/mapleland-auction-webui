@@ -13,7 +13,7 @@ export default function BoostModal() {
         아래의 계좌로 원하는 액수만큼 입금해주세요.
       </p>
       <p>
-        <b className="text-[#2D7CEB]">토스뱅크 1000-5283-2442</b>
+        <b className="text-[#2D7CEB]">토스뱅크 1000-5283-2442 (ㅂㅅㅎ)</b>
       </p>
       <br />
       <p>감사합니다.</p>

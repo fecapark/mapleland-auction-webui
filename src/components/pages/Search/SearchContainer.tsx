@@ -73,7 +73,7 @@ export default function SearchContainer({
   return (
     <div
       className={`search-container relative w-full max-w-[600px] ${
-        embedded ? "w-auto" : "mb-10 xs:mb-16"
+        embedded ? "w-auto" : "mb-4 xs:mb-8"
       }`}
     >
       <SearchBar focused={focused} isEmbedded={embedded} />

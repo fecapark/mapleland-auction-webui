@@ -10,6 +10,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import localFont from "next/font/local";
 import Footer from "@/components/Footer/Footer";
 import { Analytics } from "@vercel/analytics/react";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: "메이플랜드 옥션",
@@ -106,6 +107,7 @@ export default function RootLayout({
         </TanstackProvider>
         <Analytics />
       </body>
+      <GoogleTagManager gtmId="GTM-M4582KFM" />
     </html>
   );
 }

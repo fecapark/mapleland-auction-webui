@@ -3,6 +3,7 @@
 import AutoHeightImage from "@/components/utils/AutoHeightImage/AutoHeightImage";
 import { getItemImageSource } from "@/server/actions";
 import dayjs from "dayjs";
+import { d } from "hangul-js";
 
 interface Props {
   itemId: string;
@@ -24,6 +25,8 @@ function parseUpdatedAt(updatedAt: string) {
   }
 
   if (isNaN(diffHour)) return "최소 1시간 전";
+
+  if (diffHour < 1) return "방금 전";
 
   return `${diffHour}시간 전`;
 }

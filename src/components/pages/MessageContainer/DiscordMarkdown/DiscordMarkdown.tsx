@@ -2,7 +2,7 @@ import Convert from "ansi-to-html";
 import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import { Inconsolata } from "next/font/google";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import DiscordEmoji from "./DiscordEmoji";
 
 const inconsolata = Inconsolata({ subsets: ["latin"] });

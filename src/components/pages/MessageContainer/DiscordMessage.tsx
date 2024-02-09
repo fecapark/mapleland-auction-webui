@@ -1,10 +1,11 @@
 import { ItemMessageData } from "@/server/actions";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import DiscordProfile from "./DiscordProfile";
 import DiscordMarkdown from "./DiscordMarkdown/DiscordMarkdown";
 import { Noto_Sans_KR } from "next/font/google";
+import { set } from "date-fns";
 
 interface Props {
   message: ItemMessageData;
@@ -29,7 +30,22 @@ function parseTimestamp(timestamp: string) {
 }
 
 export default function DiscordMessage({ message }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
   const [isHover, setIsHover] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    if (ref.current.childNodes.length > 10) setIsVisible(false);
+    else if (
+      ref.current.textContent &&
+      ref.current.textContent.split("\n").length > 10
+    )
+      setIsVisible(false);
+    else setIsVisible(true);
+  }, [ref]);
+
+  if (!isVisible) return null;
 
   return (
     <Link
@@ -63,7 +79,10 @@ export default function DiscordMessage({ message }: Props) {
               {parseTimestamp(message.timestamp)}
             </span>
           </div>
-          <div className="w-full overflow-hidden text-[#D2D5D9] text-[15px] leading-[1.375rem]">
+          <div
+            className="w-full overflow-hidden text-[#D2D5D9] text-[15px] leading-[1.375rem]"
+            ref={ref}
+          >
             <DiscordMarkdown content={message.full_text} />
           </div>
         </div>

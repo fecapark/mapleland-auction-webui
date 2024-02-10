@@ -336,7 +336,7 @@ export default function Trending() {
           <div className="flex-center flex-col gap-2">
             <span className="font-semibold text-4xl">트렌딩</span>
             <span className="text-[#c2c2c5] text-md">
-              현재 어떤 아이템이 주목받고 있을까요?
+              오늘은 어떤 아이템들이 주목받고 있을까요?
             </span>
           </div>
 
@@ -351,7 +351,7 @@ export default function Trending() {
               <>
                 <div className="sm:col-span-2 w-full md:w-auto flex-center">
                   <InfoCard
-                    title="전날 거래 글"
+                    title="오늘 거래 글"
                     titleImgSrc={getItemImageSource(4001005)} // 고대의 주문서
                     unit="건"
                     value={trendingData.counts.total}
@@ -393,7 +393,7 @@ export default function Trending() {
                 />
                 <TrendingSection
                   title="거래량"
-                  description="하루 동안 올라온 거래 글의 총 수를 의미해요."
+                  description="오늘 0시 이후로 올라온 거래 글의 총 수를 의미해요."
                   datas={trendingData.total_results}
                   type="volume"
                 />

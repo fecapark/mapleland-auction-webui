@@ -172,7 +172,7 @@ export async function getItemStatistics(
   itemId: string
 ): Promise<Record<string, StatisticsData> | null> {
   const data = (
-    await getDoc(doc(collection(db, itemId), "statistics-test"))
+    await getDoc(doc(collection(db, itemId), "statistics"))
   ).data() as Record<string, StatisticsData> | null;
 
   if (!data) return null;
@@ -219,7 +219,7 @@ export async function getTrendingData(): Promise<RecentAllTrendingData | null> {
   }
 
   const noScrollData = (
-    await getDoc(doc(collection(db, "trending"), "recent-test"))
+    await getDoc(doc(collection(db, "trending"), "recent"))
   ).data() as RecentNoScrollTrendingData | null;
 
   const scrollData = (

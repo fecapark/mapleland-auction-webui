@@ -18,10 +18,11 @@ function NoticeContainer({ hidden }: { hidden: boolean }) {
           <IconWrapper className="text-[#B31306] mr-2 text-lg">
             <HiSpeakerphone />
           </IconWrapper>
-          <Link href="/notices/4" className="overflow-hidden">
+          <Link href="/updates/6" className="overflow-hidden">
             <div className="w-full text-ellipsis text-[#d2d2d5]">
               <p className="text-sm text-ellipsis whitespace-nowrap overflow-hidden hover:underline cursor-pointer">
-                [2/10 공지사항] 현재 주문서 관련 시세 기능 업데이트 중 입니다.
+                [2/11 업데이트] 주문서 및 디스코드 아이템 시세 관련 기능
+                업데이트 및 개선 안내
               </p>
             </div>
           </Link>

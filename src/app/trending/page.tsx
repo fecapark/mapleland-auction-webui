@@ -323,8 +323,8 @@ export default function Trending() {
   });
 
   const isTrendingLoading =
-    isLoading ||
     trendingData === undefined ||
+    isLoading === undefined ||
     isGGLoading ||
     trendingGGData === undefined;
 

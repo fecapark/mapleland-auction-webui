@@ -18,7 +18,6 @@ interface Props {
 
 const parseToSeries = (
   section: "overview" | "buyer" | "seller",
-  platformSection: "discord" | "gg",
   chartTickValue: "hour" | "day",
   data: Record<string, StatisticsData>
 ): Serie[] => {
@@ -60,14 +59,9 @@ const parseToSeries = (
     datestrAscCompareFn(a[0], b[0])
   );
 
-  if (platformSection === "discord") {
+  if (chartTickValue === "hour") {
     sortedData = sortedData.slice(
-      Math.max(sortedData.length - 14, 0),
-      sortedData.length
-    );
-  } else if (chartTickValue === "hour") {
-    sortedData = sortedData.slice(
-      Math.max(sortedData.length - 24, 0),
+      Math.max(sortedData.length - 14, 0), // 24
       sortedData.length
     );
   } else {
@@ -160,7 +154,6 @@ const parseToSeries = (
 export default function ItemPriceChart({ chartData }: Props) {
   const { isXS } = useRecoilValue(xsMediaMatchedAtom);
   const section = useRecoilValue(itemPriceNavigatorSectionAtom);
-  const platformSection = useRecoilValue(platformPriceNavigatorSectionAtom);
   const chartTickValue = useRecoilValue(chartTickValueAtom);
 
   if (chartData === null) return <div></div>;
@@ -185,7 +178,7 @@ export default function ItemPriceChart({ chartData }: Props) {
         },
       }}
       tooltip={({ point }) => <Tooltip point={point} />}
-      data={parseToSeries(section, platformSection, chartTickValue, chartData)}
+      data={parseToSeries(section, chartTickValue, chartData)}
       margin={{
         top: isXS ? 40 : 55,
         right: isXS ? 20 : 70,
@@ -194,12 +187,7 @@ export default function ItemPriceChart({ chartData }: Props) {
       }}
       xScale={{
         type: "time",
-        format:
-          platformSection === "discord"
-            ? "%Y-%m-%d"
-            : chartTickValue === "hour"
-            ? "%Y-%m-%d %H:%M:%S"
-            : "%Y-%m-%d",
+        format: chartTickValue === "hour" ? "%Y-%m-%d %H:%M:%S" : "%Y-%m-%d",
         precision: "hour",
       }}
       yScale={{
@@ -213,12 +201,10 @@ export default function ItemPriceChart({ chartData }: Props) {
       axisBottom={{
         renderTick: (tick) => <BottomTick tick={tick} />,
         tickValues:
-          platformSection === "discord"
-            ? "every 1 days"
-            : chartTickValue === "hour"
+          chartTickValue === "hour"
             ? isXS
-              ? "every 8 hours"
-              : "every 6 hours"
+              ? "every 12 hours"
+              : "every 12 hours"
             : "every 1 days",
         tickSize: 12,
         tickPadding: 10,

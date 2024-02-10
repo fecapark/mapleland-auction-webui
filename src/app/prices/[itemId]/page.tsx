@@ -271,14 +271,12 @@ export default function ItemPricePage({
                     >
                       일
                     </SmallNavItem>
-                    {platformSection === "discord" ? null : (
-                      <SmallNavItem
-                        onClick={() => setChartTickValue("hour")}
-                        selected={chartTickValue === "hour"}
-                      >
-                        시간
-                      </SmallNavItem>
-                    )}
+                    <SmallNavItem
+                      onClick={() => setChartTickValue("hour")}
+                      selected={chartTickValue === "hour"}
+                    >
+                      시간
+                    </SmallNavItem>
                   </div>
                 </div>
                 <div className="w-full h-[300px] xs:h-[400px] sm:h-[500px]">

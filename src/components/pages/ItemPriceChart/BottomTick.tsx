@@ -13,38 +13,23 @@ const getDateContent = (datestr: string, platformSection: "discord" | "gg") => {
   const day = date.get("date");
   let hour = date.get("hour");
 
-  if (platformSection === "discord") {
-    // 새해에는 년도만 표시
-    if (month === 1 && day === 1)
-      return { big: true, bold: true, content: `${year}` };
+  if (month === 1 && day === 1 && hour === 0)
+    return { big: true, bold: true, content: `${year}` };
 
-    // 매 월마다 월 표시
-    if (day === 1) return { big: false, bold: true, content: `${month}월` };
+  // 매 월마다 월 표시
+  if (day === 1 && hour === 0)
+    return { big: false, bold: true, content: `${month}월` };
 
-    // 매 3일 마다 일 표시
-    if (day % 3 === 0) return { big: false, bold: false, content: `${day}` };
-  }
+  // 매일마다 일 표시
+  if (hour === 0) return { big: false, bold: true, content: `${day}` };
 
-  if (platformSection === "gg") {
-    // 새해에는 년도만 표시
-    if (month === 1 && day === 1 && hour === 0)
-      return { big: true, bold: true, content: `${year}` };
-
-    // 매 월마다 월 표시
-    if (day === 1 && hour === 0)
-      return { big: false, bold: true, content: `${month}월` };
-
-    // 매일마다 일 표시
-    if (hour === 0) return { big: false, bold: true, content: `${day}` };
-
-    // 매 3시간 마다 시간 표시
-    if (hour % 1 === 0)
-      return {
-        big: false,
-        bold: false,
-        content: `${hour < 10 ? "0" : ""}${hour}:00`,
-      };
-  }
+  // 매 3시간 마다 시간 표시
+  if (hour % 1 === 0)
+    return {
+      big: false,
+      bold: false,
+      content: `${hour < 10 ? "0" : ""}${hour}:00`,
+    };
 
   return { big: false, bold: false, content: null };
 };

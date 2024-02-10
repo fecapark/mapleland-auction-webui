@@ -64,7 +64,26 @@ export interface TrendingItemData {
   rank_diff: number | null;
 }
 
-interface RecentTrendingData {
+interface RecentScrollTrendingData {
+  date: string;
+  counts: {
+    scrolls: number;
+  };
+  cost: TrendingItemData[];
+  total_results: TrendingItemData[];
+}
+
+interface RecentNoScrollTrendingData {
+  date: string;
+  counts: {
+    throwing_stars: number;
+    total: number;
+  };
+  cost: TrendingItemData[];
+  total_results: TrendingItemData[];
+}
+
+export interface RecentAllTrendingData {
   date: string;
   counts: {
     scrolls: number;
@@ -153,11 +172,19 @@ export async function getItemStatistics(
   itemId: string
 ): Promise<Record<string, StatisticsData> | null> {
   const data = (
-    await getDoc(doc(collection(db, itemId), "statistics"))
+    await getDoc(doc(collection(db, itemId), "statistics-test"))
   ).data() as Record<string, StatisticsData> | null;
 
   if (!data) return null;
-  return data;
+  const dateWithDatestrAndHour: Record<string, StatisticsData> = {};
+  Object.entries(data).forEach(([datestr, dataAboutHour]) => {
+    Object.entries(dataAboutHour).forEach(([hour, data]) => {
+      const datestrWithHour = `${datestr} ${hour}:00:00`;
+      if (dayjs().diff(dayjs(datestrWithHour)) < 0) return;
+      dateWithDatestrAndHour[datestrWithHour] = data;
+    });
+  });
+  return dateWithDatestrAndHour;
 }
 
 export async function getGGItemStatistics(
@@ -179,13 +206,55 @@ export async function getGGItemStatistics(
   return dateWithDatestrAndHour;
 }
 
-export async function getTrendingData(): Promise<RecentTrendingData | null> {
-  const data = (
-    await getDoc(doc(collection(db, "trending"), "recent"))
-  ).data() as RecentTrendingData | null;
+export async function getTrendingData(): Promise<RecentAllTrendingData | null> {
+  function uniquify(datas: TrendingItemData[]) {
+    // 배열 상 먼저 온 데이터를 더 신뢰한다.
+    const unique = new Map<number, TrendingItemData>();
+    datas.forEach((data) => {
+      if (!unique.has(data.id)) {
+        unique.set(data.id, data);
+      }
+    });
+    return Array.from(unique.values());
+  }
 
-  if (!data) return null;
-  return data;
+  const noScrollData = (
+    await getDoc(doc(collection(db, "trending"), "recent-test"))
+  ).data() as RecentNoScrollTrendingData | null;
+
+  const scrollData = (
+    await getDoc(doc(collection(db, "trending"), "recent-scroll"))
+  ).data() as RecentScrollTrendingData | null;
+
+  if (!noScrollData || !scrollData) return null;
+
+  const counts = {
+    total: noScrollData.counts.total,
+    scrolls: scrollData.counts.scrolls,
+    throwing_stars: noScrollData.counts.throwing_stars,
+  };
+
+  let costs = [...scrollData.cost, ...noScrollData.cost];
+  let total_results = [
+    ...scrollData.total_results,
+    ...noScrollData.total_results,
+  ];
+
+  costs = uniquify(costs)
+    .sort((a, b) => a.value - b.value)
+    .reverse()
+    .slice(0, 10);
+  total_results = uniquify(total_results)
+    .sort((a, b) => a.value - b.value)
+    .reverse()
+    .slice(0, 10);
+
+  return {
+    date: noScrollData.date ?? scrollData.date,
+    counts,
+    cost: costs,
+    total_results,
+  };
 }
 
 export async function getTrendingGGData(): Promise<RecentTrendingGGData | null> {

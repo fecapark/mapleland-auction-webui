@@ -21,7 +21,6 @@ const getTooltipIcon = (serieId: string | number) => {
 };
 
 export default function Tooltip({ point }: Props) {
-  const platformSection = useRecoilValue(platformPriceNavigatorSectionAtom);
   const date = dayjs(point.data.xFormatted, "YYYY-MM-DD HH:mm:ss").subtract(
     9,
     "hour"
@@ -44,11 +43,9 @@ export default function Tooltip({ point }: Props) {
           {date.get("year")}-{date.get("month") < 9 ? "0" : ""}
           {date.get("month") + 1}-{date.get("date") < 10 ? "0" : ""}
           {date.get("date")}{" "}
-          {platformSection === "gg"
-            ? (date.get("hour") < 10 ? "0" : "") +
-              date.get("hour").toString() +
-              ":00"
-            : ""}
+          {(date.get("hour") < 10 ? "0" : "") +
+            date.get("hour").toString() +
+            ":00"}
         </span>
       </div>
       <div className="flex items-center gap-1">

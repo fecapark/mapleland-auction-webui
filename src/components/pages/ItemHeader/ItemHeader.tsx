@@ -1,9 +1,12 @@
 "use client";
 
 import AutoHeightImage from "@/components/utils/AutoHeightImage/AutoHeightImage";
+import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
 import { getItemImageSource } from "@/server/actions";
 import dayjs from "dayjs";
 import { d } from "hangul-js";
+import Link from "next/link";
+import { MdOpenInNew } from "react-icons/md";
 
 interface Props {
   itemId: string;
@@ -31,6 +34,22 @@ function parseUpdatedAt(updatedAt: string) {
   return `${diffHour}시간 전`;
 }
 
+function OuterItemLink({
+  children,
+  href,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link href={href} target="_blank" rel="noopener noreferrer">
+      <div className="card-border card-bg px-6 py-[6px] text-[#f0f0f3] text-sm flex-center gap-2 hover:card-hover">
+        {children}
+      </div>
+    </Link>
+  );
+}
+
 export default function ItemHeader({ itemId, itemName, updatedAt }: Props) {
   return (
     <>
@@ -47,6 +66,22 @@ export default function ItemHeader({ itemId, itemName, updatedAt }: Props) {
                 : `${parseUpdatedAt(updatedAt)}에 업데이트 됨`}
             </span>
           </div>
+        </div>
+        <div className="flex gap-3 mt-2">
+          <OuterItemLink href={`https://www.mapleland.gg/item/${itemId}`}>
+            <span>메랜지지</span>
+            <IconWrapper className="text-[17px]">
+              <MdOpenInNew />
+            </IconWrapper>
+          </OuterItemLink>
+          <OuterItemLink
+            href={`https://mapledb.kr/search.php?q=${itemId}&t=item`}
+          >
+            <span>메랜디비</span>
+            <IconWrapper className="text-[17px]">
+              <MdOpenInNew />
+            </IconWrapper>
+          </OuterItemLink>
         </div>
       </div>
     </>

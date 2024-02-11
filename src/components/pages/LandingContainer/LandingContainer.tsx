@@ -21,8 +21,8 @@ function NoticeContainer({ hidden }: { hidden: boolean }) {
           <Link href="/notices/4" className="overflow-hidden">
             <div className="w-full text-ellipsis text-[#d2d2d5]">
               <p className="text-sm text-ellipsis whitespace-nowrap overflow-hidden hover:underline cursor-pointer">
-                [2/12 공지사항] 일부 차트 시세가 0이 되는 경우가 발생하고
-                있습니다.
+                [2/12 공지사항] 메이플랜드 옥션은 공식 디스코드 채널이 존재하지
+                않습니다.
               </p>
             </div>
           </Link>

@@ -59,6 +59,7 @@ export default function Updates() {
         </div>
         <div className="w-full flex flex-col gap-6">
           {allUpdatePosts
+            .sort((a, b) => b.index - a.index)
             .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
             .map((post) => (
               <UpdateCard

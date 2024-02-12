@@ -27,9 +27,9 @@ export default function SimpleTrendingInfo() {
             />
           </div>
           <div className="text-[#c2c2c5]">
-            <b>전날</b> 뇌전 수리검이 <b>종합 시세 평균 1억 메소</b>
+            <b>최근</b> 뇌전 수리검이 <b>종합 시세 평균 1억 메소</b>
             로<br />
-            가장 비싸게 거래되었음을 의미해요.
+            거래되었음을 의미해요.
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default function SimpleTrendingInfo() {
             />
           </div>
           <div className="text-[#c2c2c5]">
-            <b>전날</b> 장갑 공격력 주문서 60%가
+            <b>오늘 0시 이후로</b> 장갑 공격력 주문서 60%가
             <br />
             <b>판매 및 구매 글이 8,056개</b>로 가장 인기가 많았음을 의미해요.
           </div>

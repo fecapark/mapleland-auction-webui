@@ -1,5 +1,5 @@
 import { StatisticsData } from "@/server/actions";
-import { datestrAscCompareFn } from "@/utils/date";
+import { datestrAscCompareFn, dbDatestrAscCompareFn } from "@/utils/date";
 import { ResponsiveLine, Serie } from "@nivo/line";
 import Tooltip from "./Tooltip";
 import {
@@ -56,7 +56,7 @@ const parseToSeries = (
   }
 
   let sortedData = Object.entries(data).sort((a, b) =>
-    datestrAscCompareFn(a[0], b[0])
+    dbDatestrAscCompareFn(a[0], b[0])
   );
 
   if (chartTickValue === "hour") {

@@ -2,7 +2,7 @@ import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
 import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
-  weight: ["400", "500", "700", "900"],
+  weight: ["500"],
   subsets: ["latin"],
 });
 

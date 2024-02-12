@@ -8,7 +8,7 @@ import {
 } from "react-icons/md";
 
 const roboto = Roboto({
-  weight: ["400", "500", "700", "900"],
+  weight: ["500"],
   subsets: ["latin"],
 });
 

@@ -10,7 +10,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import localFont from "next/font/local";
 import Footer from "@/components/Footer/Footer";
 import { Analytics } from "@vercel/analytics/react";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: "메이플랜드 옥션",
@@ -18,44 +18,27 @@ export const metadata: Metadata = {
     "메랜 옥션 | 메이플랜드 아이템들의 현재 시세 및 거래가를 검색해보세요.",
 };
 
-const NotoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
+const NotoSansKR = Noto_Sans_KR({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 const Pretendard = localFont({
   src: [
     {
-      path: "fonts/Pretendard/Pretendard-Thin.otf",
-      weight: "100",
-    },
-    {
-      path: "/fonts/Pretendard/Pretendard-ExtraLight.otf",
-      weight: "200",
-    },
-    {
-      path: "fonts/Pretendard/Pretendard-Light.otf",
-      weight: "300",
-    },
-    {
-      path: "fonts/Pretendard/Pretendard-Regular.otf",
+      path: "fonts/Pretendard/Pretendard-Regular.subset.woff2",
       weight: "400",
     },
     {
-      path: "fonts/Pretendard/Pretendard-Medium.otf",
+      path: "fonts/Pretendard/Pretendard-Medium.subset.woff2",
       weight: "500",
     },
     {
-      path: "fonts/Pretendard/Pretendard-SemiBold.otf",
+      path: "fonts/Pretendard/Pretendard-SemiBold.subset.woff2",
       weight: "600",
     },
     {
-      path: "fonts/Pretendard/Pretendard-Bold.otf",
+      path: "fonts/Pretendard/Pretendard-Bold.subset.woff2",
       weight: "700",
-    },
-    {
-      path: "fonts/Pretendard/Pretendard-ExtraBold.otf",
-      weight: "800",
-    },
-    {
-      path: "fonts/Pretendard/Pretendard-Black.otf",
-      weight: "900",
     },
   ],
 });

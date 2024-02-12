@@ -10,7 +10,7 @@ import {
   getItemList,
   getItemStatistics,
 } from "@/server/actions";
-import { datestrAscCompareFn } from "@/utils/date";
+import { datestrAscCompareFn, dbDatestrAscCompareFn } from "@/utils/date";
 import { useQuery } from "@tanstack/react-query";
 import { use, useEffect, useMemo, useState } from "react";
 import { MdWarning, MdSsidChart, MdInfoOutline } from "react-icons/md";
@@ -29,7 +29,7 @@ import {
   platformPriceNavigatorSectionAtom,
 } from "@/shared/atoms";
 import { FaDiscord } from "react-icons/fa";
-import { set } from "date-fns";
+import { db } from "@/shared/firestore";
 
 interface RouteParams {
   itemId: string;
@@ -169,7 +169,9 @@ export default function ItemPricePage({
         prevData: null,
       };
 
-    const datesByRecent = Object.keys(data).sort(datestrAscCompareFn).reverse();
+    const datesByRecent = Object.keys(data)
+      .sort(dbDatestrAscCompareFn)
+      .reverse();
     const recentDatestr = datesByRecent[0];
     const prevDatestr = datesByRecent[1];
     return {

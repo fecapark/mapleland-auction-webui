@@ -4,7 +4,6 @@ import AutoHeightImage from "@/components/utils/AutoHeightImage/AutoHeightImage"
 import { IconWrapper } from "@/components/utils/IconWrapper/IconWrapper";
 import { getItemImageSource } from "@/server/actions";
 import dayjs from "dayjs";
-import { d } from "hangul-js";
 import Link from "next/link";
 import { MdOpenInNew } from "react-icons/md";
 

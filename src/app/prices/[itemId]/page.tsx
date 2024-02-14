@@ -102,18 +102,17 @@ function ReliabilityWarn() {
 
 function GoogleAds() {
   useEffect(() => {
-    if (window) {
-      (window.adsbygoogle = window.adsbygoogle || [])?.push({});
+    try {
+      if (window) {
+        (window.adsbygoogle = window.adsbygoogle || [])?.push({});
+      }
+    } catch (e) {
+      console.error(e);
     }
   }, []);
 
   return (
     <div className="w-full mt-6">
-      <script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5067810809862075"
-        crossOrigin="anonymous"
-      ></script>
       <ins
         className="adsbygoogle"
         style={{

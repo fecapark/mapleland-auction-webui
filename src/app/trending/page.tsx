@@ -17,7 +17,7 @@ import { FaMinus } from "react-icons/fa6";
 import { IoTriangleSharp } from "react-icons/io5";
 import { MdWarning } from "react-icons/md";
 import { FaDiscord } from "react-icons/fa";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   chartTickValueAtom,
@@ -307,6 +307,34 @@ function InfoCard({
   );
 }
 
+function GoogleAds() {
+  useEffect(() => {
+    try {
+      if (window) {
+        (window.adsbygoogle = window.adsbygoogle || [])?.push({});
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+  return (
+    <div className="w-full">
+      <ins
+        className="adsbygoogle"
+        style={{
+          display: "block",
+          textAlign: "center",
+        }}
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-5067810809862075"
+        data-ad-slot="6164148126"
+      ></ins>
+    </div>
+  );
+}
+
 export default function Trending() {
   const { data: trendingData, isLoading } = useQuery({
     queryKey: ["trending"],
@@ -376,8 +404,10 @@ export default function Trending() {
               </>
             )}
           </div>
-
-          <div className="mt-16 w-full">
+          <div className="mt-8">
+            <GoogleAds />
+          </div>
+          <div className="mt-8 w-full">
             {isTrendingLoading ? null : trendingData === null ||
               trendingGGData === null ? (
               "데이터를 불러올 수 없습니다."

@@ -36,7 +36,7 @@ export default function Footer() {
   });
 
   return (
-    <footer className="py-8 px-4 w-full bg-[#28282a] mt-[120px] flex-center flex-col text-[#d2d2d4]">
+    <footer className="py-16 px-4 w-full bg-[#28282a] mt-[120px] flex-center flex-col text-[#d2d2d4]">
       <div className="flex-center gap-6 xs:gap-8 mb-6">
         <FooterButton>
           <Link href="/notices">공지사항</Link>

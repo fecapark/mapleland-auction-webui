@@ -35,11 +35,6 @@ export default function Footer() {
     content: <Report />,
   });
 
-  const setBoostModal = useModal({
-    title: "후원",
-    content: <BoostModal />,
-  });
-
   return (
     <footer className="py-8 px-4 w-full bg-[#28282a] mt-[120px] flex-center flex-col text-[#d2d2d4]">
       <div className="flex-center gap-6 xs:gap-8 mb-6">
@@ -55,7 +50,6 @@ export default function Footer() {
         <FooterButton onClick={() => setReportModal(true)}>
           버그 제보 및 문의하기
         </FooterButton>
-        <FooterButton onClick={() => setBoostModal(true)}>후원</FooterButton>
       </div>
 
       <div className="flex-center gap-1 flex-col text-xs xs:text-sm">

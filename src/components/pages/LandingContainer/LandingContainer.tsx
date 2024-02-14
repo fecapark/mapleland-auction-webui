@@ -38,8 +38,8 @@ export default function LandingContainer() {
     <div
       className={
         searchFocused
-          ? "w-full flex justify-center items-start"
-          : "w-full flex-center"
+          ? "max-w-[900px] w-full flex justify-center items-start"
+          : "max-w-[900px] w-full flex-center"
       }
     >
       <div className={`w-full px-4 ${searchFocused ? "pt-4 xs:pt-0" : ""}`}>

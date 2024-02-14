@@ -18,11 +18,10 @@ function NoticeContainer({ hidden }: { hidden: boolean }) {
           <IconWrapper className="text-[#B31306] mr-2 text-lg">
             <HiSpeakerphone />
           </IconWrapper>
-          <Link href="/notices/4" className="overflow-hidden">
+          <Link href="/notices/5" className="overflow-hidden">
             <div className="w-full text-ellipsis text-[#d2d2d5]">
               <p className="text-sm text-ellipsis whitespace-nowrap overflow-hidden hover:underline cursor-pointer">
-                [2/12 공지사항] 메이플랜드 옥션은 공식 디스코드 채널이 존재하지
-                않습니다.
+                [2/14 공지사항] 메랜옥션 사이트 내 광고 개제 안내
               </p>
             </div>
           </Link>

@@ -100,6 +100,35 @@ function ReliabilityWarn() {
   );
 }
 
+function GoogleAds() {
+  useEffect(() => {
+    if (window) {
+      (window.adsbygoogle = window.adsbygoogle || [])?.push({});
+    }
+  }, []);
+
+  return (
+    <div className="w-full mt-6">
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5067810809862075"
+        crossOrigin="anonymous"
+      ></script>
+      <ins
+        className="adsbygoogle"
+        style={{
+          display: "block",
+          textAlign: "center",
+        }}
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client="ca-pub-5067810809862075"
+        data-ad-slot="2377533083"
+      ></ins>
+    </div>
+  );
+}
+
 export default function ItemPricePage({
   params: { itemId },
 }: {
@@ -291,6 +320,7 @@ export default function ItemPricePage({
                   />
                 </div>
               </div>
+              <GoogleAds />
               {/* 메시지 */}
               <div className="w-full">
                 <MessageContainer itemId={itemId} />

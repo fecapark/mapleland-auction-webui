@@ -404,7 +404,7 @@ export default function Trending() {
               </>
             )}
           </div>
-          <div className="mt-8">
+          <div className="w-full mt-8">
             <GoogleAds />
           </div>
           <div className="mt-8 w-full">

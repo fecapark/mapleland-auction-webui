@@ -233,11 +233,11 @@ export default function ItemPricePage({
               </div>
             </SmallNavItem>
           </div>
-          <FixedPriceCardContainer
+          {/* <FixedPriceCardContainer
             itemId={itemId}
             recentData={recentData}
             active={!inView}
-          />
+          /> */}
           <div className="flex flex-col items-center w-full">
             <ItemHeader
               itemId={itemId}

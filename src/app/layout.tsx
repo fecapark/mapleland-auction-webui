@@ -11,6 +11,7 @@ import localFont from "next/font/local";
 import Footer from "@/components/Footer/Footer";
 import { Analytics } from "@vercel/analytics/react";
 import { GoogleTagManager } from "@next/third-parties/google";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "메이플랜드 옥션",
@@ -56,6 +57,16 @@ export default function RootLayout({
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${process.env.NEXT_PUBLIC_adsKey}`}
           crossOrigin="anonymous"
         ></script>
+        <script
+          async
+          src="https://fundingchoicesmessages.google.com/i/pub-5067810809862075?ers=1"
+          nonce="jVOU16m7cqDWJOhCBSesPg"
+        ></script>
+        <Script id="anti-adblock" nonce="jVOU16m7cqDWJOhCBSesPg">
+          {`
+            (function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();
+            `}
+        </Script>
         <meta
           name="google-adsense-account"
           content={`ca-pub-${process.env.NEXT_PUBLIC_adsKey}`}

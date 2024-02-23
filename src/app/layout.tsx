@@ -89,6 +89,22 @@ export default function RootLayout({
           href="/favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest"></link>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-ETRZF8H0P3"
+        ></Script>
+        <Script
+          id="gtag-init"
+          dangerouslySetInnerHTML={{
+            __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-ETRZF8H0P3');
+          `,
+          }}
+        ></Script>
       </head>
       <body className={`${Pretendard.className} ${NotoSansKR.className}`}>
         <TanstackProvider>

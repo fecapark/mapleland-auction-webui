@@ -3,8 +3,20 @@ interface Props {
 }
 
 const getPriceContent = (value: number) => {
-  if (value >= 1000000) return `${Math.floor(value / 1000000)}M`;
-  if (value >= 1000) return `${Math.floor(value / 1000)}K`;
+  const units = {
+    억: 100000000,
+    만: 10000,
+    천: 1000,
+  };
+
+  for (const [unit, boundary] of Object.entries(units).sort(
+    (a, b) => b[1] - a[1]
+  )) {
+    if (value >= boundary) {
+      return `${Math.floor(value / boundary)}${unit}`;
+    }
+  }
+
   return value;
 };
 

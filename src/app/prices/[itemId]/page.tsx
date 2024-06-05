@@ -319,7 +319,7 @@ export default function ItemPricePage({
                   />
                 </div>
               </div>
-              <GoogleAds />
+              {/* <GoogleAds /> */}
               {/* 메시지 */}
               <div className="w-full">
                 <MessageContainer itemId={itemId} />

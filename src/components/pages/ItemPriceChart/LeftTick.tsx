@@ -13,6 +13,8 @@ const getPriceContent = (value: number) => {
     (a, b) => b[1] - a[1]
   )) {
     if (value >= boundary) {
+      if (unit === "억" && value < 1000000000)
+        return `${Math.floor((value / boundary) * 10) / 10}${unit}`;
       return `${Math.floor(value / boundary)}${unit}`;
     }
   }

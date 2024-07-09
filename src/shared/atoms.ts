@@ -35,5 +35,5 @@ export const modalContentAtom = atom<IModalContent | null>({
 
 export const chartTickValueAtom = atom<"day" | "hour">({
   key: "chartTickValues",
-  default: "hour",
+  default: "day",
 });

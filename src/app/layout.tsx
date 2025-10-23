@@ -52,11 +52,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${process.env.NEXT_PUBLIC_adsKey}`}
-          crossOrigin="anonymous"
-        ></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4853769564458459"
+     crossorigin="anonymous"></script>
         <script
           async
           src="https://fundingchoicesmessages.google.com/i/pub-5067810809862075?ers=1"
@@ -67,10 +64,6 @@ export default function RootLayout({
             (function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();
             `}
         </Script>
-        <meta
-          name="google-adsense-account"
-          content={`ca-pub-${process.env.NEXT_PUBLIC_adsKey}`}
-        ></meta>
         <link
           rel="apple-touch-icon"
           sizes="180x180"
